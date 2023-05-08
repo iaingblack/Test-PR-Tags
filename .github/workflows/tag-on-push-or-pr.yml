@@ -22,17 +22,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: set release value
-        run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $GITHUB_ENV
-
-      - name: show env
-        run: echo "VALUE IS - ${{ env.NOW }}"
-        
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Bump version and push tag
+        id: env.NOW
+        uses: mathieudutour/github-tag-action@v6.1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.NOW }}"
-          prerelease: false
-          title: "${{ env.NOW }}"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}          
         
 
