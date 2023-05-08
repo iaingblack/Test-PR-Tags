@@ -23,11 +23,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: set release value
-        run: echo "NOW=($date +'%Y%m%d.%H%M%S')" >> $GITHUB_ENV
-    
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ env.NOW }}"
-          prerelease: false
-          title: "${{ env.NOW }}"
+        run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $GITHUB_ENV
+        
+
